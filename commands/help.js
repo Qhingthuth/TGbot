@@ -20,7 +20,7 @@ module.exports.run = async function ({ bot, args, chatId, userId }) {
             const commandModule = require(`./${command}.js`);
             return `${index + 1}. ${command} - ${commandModule.config.description}`;
         }).join('\n');
-        const helpMessage = `━━━━━━━━━━━━━\n${commandListText}\n━━━━━━━━━━━━━\nPage [ 1/1 ]\nCurrently, the bot has ${commandList.length} commands that can be used\n» Type !help <page> to view the command list\n» Type !help <command> to view the details of that command\n━━━━━━━━━━━━━\n[ 🐉 | Yukai ]`;
+        const helpMessage = `━━━━━━━━━━━━━\n${commandListText}\n━━━━━━━━━━━━━\nPage [ 1/1 ]\nCurrently, the bot has ${commandList.length} commands that can be used\n» Type !help <page> to view the command list\n» Type !help <command> to view the details of that command\n━━━━━━━━━━━━━\n[ 🔥🤖 | Dammy ]`;
 
         bot.sendMessage(chatId, helpMessage);
     } else {
