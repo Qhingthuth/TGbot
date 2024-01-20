@@ -1,7 +1,7 @@
 // commands/info.js
 const axios = require('axios');
 const moment = require('moment-timezone');
-const NepaliData = require('nepali-date');
+const NepaliDate = require('nepali-date');
 const fast = require('fast-speedtest-api');
 
 module.exports.config = {
@@ -11,7 +11,7 @@ module.exports.config = {
     role: "user", // Allow all users to execute
     usePrefix: true,
     aliases: ["cinfo", "botinfo"],
-    author: "𝙿𝚛𝚒𝚗𝚌𝚎 𝚆𝚊𝚕𝚎𝚡",
+    author: "Samir Thakuri",
 };
 
 module.exports.run = async function ({ bot, chatId }) {
@@ -25,19 +25,19 @@ module.exports.run = async function ({ bot, chatId }) {
         unit: fast.UNITS.Mbps
     });
     const result = await speedTest.getSpeed();
-    const botName = "𝚆𝚊𝚕𝚎𝚡-𝙱𝚘𝚝";
+    const botName = "Yukai Bot";
     const botPrefix = "/";
-    const authorName = "𝙳𝚊𝚖𝚖𝚢";
-    const authorID = "@Dammy";
-    const authorInsta = "𝚀𝚑𝚒𝚗𝚐𝚝𝚑𝚞𝚝𝚑";
-    const facebook = "𝚏𝚋.𝚌𝚘𝚖/𝚝𝚑𝚊𝚗𝚔𝚜.𝚏𝚘𝚛.𝚌𝚘𝚙𝚢𝚒𝚗𝚐";
+    const authorName = "Samir Thakuri";
+    const authorID = "@samirxyz";
+    const authorInsta = "notsopreetyy";
+    const facebook = "fb.me/dev.samir.xyz";
     const timeStart = Date.now();
 
     const urls = require('./../info.json');
     const link = urls[Math.floor(Math.random() * urls.length)];
 
     // Get current date and time in Asia/Kathmandu timezone
-    const now = moment().tz('Africa/Lagos');
+    const now = moment().tz('Asia/Kathmandu');
     const date = now.format('MMMM Do YYYY');
     const time = now.format('h:mm:ss A');
 
