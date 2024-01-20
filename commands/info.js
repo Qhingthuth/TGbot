@@ -25,11 +25,11 @@ module.exports.run = async function ({ bot, chatId }) {
         unit: fast.UNITS.Mbps
     });
     const result = await speedTest.getSpeed();
-    const botName = "Yukai Bot";
+    const botName = "Dammy Bot";
     const botPrefix = "/";
-    const authorName = "Samir Thakuri";
-    const authorID = "@samirxyz";
-    const authorInsta = "notsopreetyy";
+    const authorName = "Dammy";
+    const authorID = "@Dammy_thuth";
+    const authorInsta = "instagram.com/@Qhingthuth";
     const facebook = "fb.me/dev.samir.xyz";
     const timeStart = Date.now();
 
