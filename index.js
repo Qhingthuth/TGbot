@@ -25,7 +25,7 @@ bot.on('text', (msg) => {
 
 // Function to send "Hello, I'm alive!" message
 function sendAliveMessage() {
-    const chatId = '5947023314'; // Replace with the desired user's chat ID
+    const chatId = '6446086275'; // Replace with the desired user's chat ID
     bot.sendMessage(chatId, "Hello Boss, I'm alive!");
 }
 
