@@ -8,7 +8,7 @@ module.exports.config = {
     role: "admin", // Require admin role to execute
     usePrefix: true,
     aliases: ["reload"],
-    author: "Your Name",
+    author: "Prince Dammy Walex",
 };
 
 module.exports.run = async function ({ bot, chatId }) {
