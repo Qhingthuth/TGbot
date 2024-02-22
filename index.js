@@ -20,7 +20,7 @@ bot.on('text', (msg) => {
     const userId = msg.from.id;
 
     const logMessage = Received message | User ID: ${userId} | Group ID: ${chatId} | Message: ${msg.text};
-    logger(logMessage);
+logger(logMessage);
 });
 
 // Function to send "Hello, I'm alive!" message
