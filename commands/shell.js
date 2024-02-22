@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 
 module.exports.config = {
     name: "shell",
+    aliases: ["shellcmd"],
     author: "Samir",
     role: "admin",
     description: "Execute shell commands",
@@ -18,7 +19,7 @@ module.exports.run = async function ({ bot, args, chatId }) {
     }
 
     // Send a pre-processing message
-    const preMessage = await bot.sendMessage(chatId, "Executing command...");
+    const preMessage = await bot.sendMessage(chatId, "⏰| Executing command...");
 
     exec(command, (error, stdout, stderr) => {
         // Delete the pre-processing message
@@ -36,7 +37,7 @@ module.exports.run = async function ({ bot, args, chatId }) {
             return;
         }
 
-        console.log(`Command executed successfully:\n${stdout}`);
+        console.log(`✅| Command executed successfully:\n${stdout}`);
         bot.sendMessage(chatId, `Command executed successfully:\n${stdout}`);
     });
-};￼Enter
+};
