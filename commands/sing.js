@@ -1,56 +1,67 @@
-// commands/ytplay.js
-const axios = require('axios');
+const axios = require("axios");
+const fs = require("fs-extra");
+const ytdl = require("ytdl-core");
+const yts = require("yt-search");
+const path = require("path");
 
 module.exports.config = {
-    name: "ytplay",
-    description: "Search for a music name and get audio and video title",
-    usage: "/ytplay <music_name>",
-    role: "user", // Allow all users to execute
-    usePrefix: true,
-    aliases: ["playmusic"],
-    author: "Your Name",
+    name: "sing",
+    aliases: ['music', 'sing', 'play'],
+    role: "user",
+    author: "Samir Thakuri",
+    description: "Download music from YouTube",
+    usage: "/sing <MusicName>",
 };
 
-module.exports.run = async function ({ bot, args, chatId }) {
-    // Check if a music name is provided
-    const query = args.join(" ");
-    if (!query) {
-        bot.sendMessage(chatId, "Please provide a music name to search.");
-        return;
+module.exports.run = async function ({ bot, chatId, userId, args }) {
+    const musicName = args.join(" ");
+    
+    if (!musicName) {
+        return bot.sendMessage(chatId, "Please specify a music name.");
     }
 
-    // Send a pre-processing message
-    const preMessage = await bot.sendMessage(chatId, "Searching for music...");
-
     try {
-        // Fetch music information from the API
-        const apiUrl = `https://www.nguyenmanh.name.vn/api/ytplay?query=${encodeURIComponent(query)}&apikey=FSShCQne`;
-        const response = await axios.get(apiUrl);
+        const searchMessage = await bot.sendMessage(chatId, `✅ | Searching music for "${musicName}".\⏳ | Please wait...`);
 
-        // Check the API response status
-        if (response.status === 200) {
-            const result = response.data.result;
-
-            // Send the audio message
-            bot.sendVideoNote(chatId, result.audio, {
-                caption: `
-🎵 Title: ${result.title}
-📺 Video Title: ${result.title}
-📈 Views: ${result.views}
-📅 Upload Date: ${result.uploadDate}
-🔗 Channel: ${result.channel}
-📖 Description: ${result.desc}
-                `,
-                parseMode: 'Markdown',
-            });
-        } else {
-            bot.sendMessage(chatId, "An error occurred while searching for music.");
+        const searchResults = await yts(musicName);
+        if (!searchResults.videos.length) {
+            await bot.deleteMessage(searchMessage.message_id); // Unsend the searching message
+            return bot.sendMessage(chatId, "No music found.");
         }
+
+        const music = searchResults.videos[0];
+        const musicUrl = music.url;
+
+        const stream = ytdl(musicUrl, { filter: "audioonly" });
+
+        const fileName = `ytmusic.mp3`;
+        const filePath = path.join(fileName);
+
+        stream.pipe(fs.createWriteStream(filePath));
+
+        stream.on('response', () => {
+            console.info('[DOWNLOADER]', 'Starting download now!');
+        });
+
+        stream.on('info', (info) => {
+            console.info('[DOWNLOADER]', `Downloading music: ${info.videoDetails.title}`);
+        });
+
+        stream.on('end', async () => {
+            console.info('[DOWNLOADER] Downloaded');
+
+            if (fs.statSync(filePath).size > 104857600) {
+                fs.unlinkSync(filePath);
+                return bot.sendMessage('❌ | The file could not be sent because it is larger than 100MB.', chatId);
+            }
+
+            const caption = `💁‍♀️ | Here's your music\n\n🔮 | Title: ${music.title}\n⏰ | Duration: ${music.duration.timestamp}`;
+
+            await bot.sendAudio(chatId, filePath, { caption }); // Sending the voice message with filepath
+            await bot.deleteMessage(searchMessage.message_id); // Unsend the searching message
+        });
     } catch (error) {
-        console.error(error);
-        bot.sendMessage(chatId, "An error occurred while searching for music.");
-    } finally {
-        // Delete the pre-processing message
-        bot.deleteMessage(chatId, preMessage.message_id);
+        console.error('[ERROR]', error);
+        bot.sendMessage(chatId, '🥺 | An error occurred while processing the command.');
     }
 };
